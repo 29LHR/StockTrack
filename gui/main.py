@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import Button, Label, Frame
-from scraper import getPrice, getPriceIncrease
+from tkinter import Label, Frame, Entry, StringVar, Button, Toplevel
+from scraper import getPrice, getPriceIncrease, tickerToName
 
 class main():
     class __favQuickFrame():
@@ -19,11 +19,15 @@ class main():
         def __displayVals(self):
             #Display the current price of the stock
             price = getPrice(self.ticker)
-            priceLbl = Label(self.__frame, text=str(price))
+            priceLbl = Label(self.__frame, text=str(price), font=("Inter", 14))
             priceLbl.pack()
             
             priceChg = getPriceIncrease(self.ticker)
-            priceChgLbl = Label(self.__frame, text=str(priceChg))
+            priceChgLbl = Label(self.__frame, text=str(priceChg), font=("Inter", 12))
+            if priceChg[0] == "+":
+                priceChgLbl.config(fg="green")
+            else:
+                priceChgLbl.config(fg="red")
             priceChgLbl.pack()
         
     def __init__(self, root, setupFile):
@@ -42,14 +46,39 @@ class main():
                 self.dateStyle = "USA"
         
         self.__setup1Page()
+        
+        #Added Custom Entry
+        self.customText = StringVar(value="Enter ticker: e.g. AAPL")
+        self.custom = Entry(self.root, textvariable=self.customText)
+        self.custom.grid(column=0, columnspan=2, row=2)
+        
+        self.searchButton = Button(self.root, text="Evaluate Stock", command=self.createStockDisplay)
+        self.searchButton.grid(column=2, row=2)
     
     def __setup1Page(self):
         h1 = Label(self.root, text=f"Hi {self.name}, here are today's stocks:")
-        h1.config(font=("Arial", 24))
+        h1.config(font=("Inter", 24))
         h1.grid(row=0, column=0, columnspan=3)
         
         currentCol = 0
         for ticker in self.favTickers:
             self.__favQuickFrame(self.root, currentCol, ticker)
             currentCol += 1
-
+    
+    def createStockDisplay(self):
+        stockDisplay(self.root, self.customText.get())
+    
+class stockDisplay():
+    def __init__(self, root, ticker):
+        #Create a toplevel
+        self.tl = Toplevel(root)
+        
+        #Define Variables
+        self.ticker = ticker
+        self.name = tickerToName(self.ticker)
+        
+        #Setup Window
+        self.tl.title(f"{self.name} Stock")
+        
+        
+        
