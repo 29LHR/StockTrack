@@ -69,6 +69,13 @@ class main():
         stockDisplay(self.root, self.customText.get())
     
 class stockDisplay():
+    class __tableElement():
+        def __init__(self, root, text, row, col):
+            self.frame = Frame(root)
+            self.label = Label(self.frame, text=text)
+            self.label.pack()
+            self.frame.grid(column=col, row=row)
+    
     def __init__(self, root, ticker):
         #Create a toplevel
         self.tl = Toplevel(root)
@@ -86,14 +93,15 @@ class stockDisplay():
         
         #Add to searches.txt
         with open("searches.txt", "a") as f:
-            f.write(self.ticker)
+            f.write(self.ticker + ",")
             
     def createValsTable(self):
-        self.valsTable = Frame(self.tl)
+        self.valsTable = Frame(self.tl, relief="solid", borderwidth=1)
         
         table = []
         for i in range(8):
-            table.append([Label(self.valsTable, text=self.vals[0+(i*2)]).grid(column=0,row=i), Label(self.valsTable, text=self.vals[1+(i*2)]).grid(column=1,row=i), Label(self.valsTable, text=self.vals[16+(i*2)]).grid(column=2,row=i),Label(self.valsTable, text=self.vals[17+(i*2)]).grid(column=3,row=i)]) #adds a row to the table
+            #table.append([Label(self.valsTable, text=self.vals[0+(i*2)]).grid(column=0,row=i), Label(self.valsTable, text=self.vals[1+(i*2)]).grid(column=1,row=i), Label(self.valsTable, text=self.vals[16+(i*2)]).grid(column=2,row=i),Label(self.valsTable, text=self.vals[17+(i*2)]).grid(column=3,row=i)])
+            table.append([self.__tableElement(self.valsTable, text=self.vals[0+(i*2)], row=i, col=0), self.__tableElement(self.valsTable, text=self.vals[1+(i*2)], row=i, col=1), self.__tableElement(self.valsTable, text=self.vals[16+(i*2)], row=i, col=2), self.__tableElement(self.valsTable, text=self.vals[17+(i*2)], row=i, col=3)]) #adds a row of tableElements to the table
             print(f"Added Row {i}")
         
-        self.valsTable.pack()
+        self.valsTable.grid(row=1, column=0, columnspan=2)
