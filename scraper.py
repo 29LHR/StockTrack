@@ -20,7 +20,6 @@ def tickerToName(ticker : str, **kwargs):
 def getHTML(ticker : str):
     #Use requests to get html content of Ticker's website
         url = f"https://stockanalysis.com/stocks/{ticker.lower()}/"
-        
         try:
             response = requests.get(url)
             html = response.content
@@ -56,7 +55,7 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
             print(f"Found {val} Data")
             return str(tdVals[i+1])
         
-def getEstEarn(ticker : str) -> date:
+def getEstEarn(ticker : str, **kwargs) -> date:
     def moToNo(month : str) -> int:
         month = month.lower()
         if month == "jan" or month == "january":
@@ -83,8 +82,12 @@ def getEstEarn(ticker : str) -> date:
             return 11
         elif month == "dec" or month == "december":
             return 12
-
-    raw = getVal(ticker, "est. earnings") #get raw data
+    
+    if "html" in kwargs.keys():
+            html = kwargs["html"]
+    else:
+        html = getHTML(ticker)
+    raw = getVal(ticker, "est. earnings", html=html) #get raw data
     
     #turn raw string into a useable date
     raw = raw.replace(",","")
@@ -94,20 +97,44 @@ def getEstEarn(ticker : str) -> date:
 def buyComp(ticker1 : str, ticker2 : str) -> str:
     t1html, t2html = getHTML(ticker1), getHTML(ticker2)
     t1soup, t2soup = BeautifulSoup(t1html, "html.parser"), BeautifulSoup(t2html, "html.parser")
-    
-    #1 Get analyst vals
-    t1anal, t2anal = getVal(ticker1, "analysts", html=t1html).lower(), getVal(ticker2, "analysts", html=t2html).lower()
-    if t1anal == "strong buy" and t2anal != "strong buy":
-        return f"{getVal(ticker1, "name", html=t1html)} ({ticker1})"
-    elif t1anal != "strong buy" and t2anal == "strong buy":
-        return f"{getVal(ticker2, "name", html=t1html)} ({ticker2})"
-    else:
-        if t1anal == "buy" and t2anal != "buy":
-            return f"{getVal(ticker1, "name", html=t1html)} ({ticker1})"
-        elif t1anal != "buy" and t2anal == "buy":
-            return f"{getVal(ticker2, "name", html=t1html)} ({ticker2})"
-        else:
-            print("Analysts were inconclusive")
             
-    #2 Find User Priority
-    
+    #1 Find User Priority
+    #USER SELECTION (GUI) - In prog. | options[time, price, earnings, analyst]
+    priority = input("Priority: ")
+    match priority:
+        case "analyst":
+            t1anal = getVal(ticker1, "analysts", html=t1html).lower()
+            t2anal = getVal(ticker2, "analysts", html=t2html).lower()
+            if t1anal == "strong buy" and t2anal != "strong buy":
+                return getVal(ticker1, "name", html=t1html)
+            elif t1anal != "strong buy" and t2anal == "strong buy":
+                return getVal(ticker2, "name", html=t2html)
+            else:
+                if t1anal == "buy" and t2anal != "buy":
+                    return getVal(ticker1, "name", html=t1html)
+                elif t1anal != "buy" and t2anal == "buy":
+                    return getVal(ticker2, "name", html=t2html)
+                else:
+                    return 'inconclusive'
+         
+        case "time":
+            t1time = getEstEarn(ticker1, html=t1html)
+            t2time = getEstEarn(ticker2, html=t2html)
+            if t1time > t2time:
+                return getVal(ticker1, "name", html=t1html)
+            elif t1time == t2time:
+                return "inconclusive"
+            else:
+                return getVal(ticker2, "name", html=t2html)
+        
+        case "price":
+            t1price = float(t1soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
+            t2price = float(t2soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
+            if t1price > t2price:
+                return getVal(ticker1, "name", html=t1html)
+            elif t1price == t2price:
+                return "inconclusive"
+            else:
+                return getVal(ticker2, "name", html=t2html)
+            
+        

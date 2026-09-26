@@ -1,4 +1,4 @@
 import gui.main as mainGUI
 from scraper import *
 
-print(buyComp("AAPL", "GME"))
+print(buyComp("AAPL", "GOOG"))
