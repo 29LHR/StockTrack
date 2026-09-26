@@ -2,5 +2,5 @@ venv/
 **./*.pyc
 *.pyc
 __pycache__/
-__setup__.txt
+__setup__.json
 gui/__pycache___/
