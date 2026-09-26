@@ -107,7 +107,12 @@ class stockDisplay():
         #Add to searches.txt
         with open("searches.txt", "a") as f:
             f.write(self.ticker + ",")
-            
+        
+        self.quickFrame = CTkFrame(self.tl)
+        self.createSearchFrame()
+        self.createTrendFrame()
+        self.quickFrame.grid(row=2, column=0, columnspan=2, sticky="nsew")
+        
     def createValsTable(self):
         self.valsTable = CTkFrame(self.tl)
         
@@ -123,3 +128,37 @@ class stockDisplay():
             all = f.read().split(",")
         
         number = all.count(self.ticker)
+        return number
+    
+    def createSearchFrame(self):
+        self.searchFrame = CTkFrame(self.quickFrame, border_width=1)
+        self.searches = self.calcSearches()
+        
+        self.searchLabel = CTkLabel(self.searchFrame, text=str(self.searches), font=("Inter", 24))
+        self.searchLabel.pack(padx=5, pady=5)
+
+        self.searchDesc = CTkLabel(self.searchFrame, text="Searches", font=("Inter",12))
+        self.searchDesc.pack(padx=5, pady=5)
+        
+        self.searchFrame.grid(row=2, column=0, padx=100, pady=10)
+    
+    def createTrendFrame(self):
+        if self.priceInc[0] == "+":
+            self.color = "green"
+        else:
+            self.color = "red"
+            
+        self.trendFrame = CTkFrame(self.quickFrame, border_width=1)
+        self.trend = self.calcSearches()
+        
+        if self.color == "green":
+            self.trendLabel = CTkLabel(self.trendFrame, text="⬆︎", font=("Inter", 24), text_color=self.color)
+        else:
+            self.trendLabel = CTkLabel(self.trendFrame, text="⬇︎", font=("Inter", 24), text_color=self.color)
+            
+        self.trendLabel.pack(padx=5, pady=5)
+
+        self.trendDesc = CTkLabel(self.trendFrame, text=self.priceInc, font=("Inter",12), text_color=self.color)
+        self.trendDesc.pack(padx=5, pady=5)
+        
+        self.trendFrame.grid(row=2, column=1, padx=100, pady=10)

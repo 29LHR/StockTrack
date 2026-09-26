@@ -10,6 +10,7 @@ with open("__setup__.json", "r") as f:
 #Initialise Main Class
 root = tk.CTk()
 mainGUI.main(root, setup)
+tk.set_appearance_mode("dark")
 
 #Start App
 root.mainloop()
