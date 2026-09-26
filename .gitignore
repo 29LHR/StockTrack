@@ -5,3 +5,4 @@ __pycache__/
 __setup__.json
 gui/__pycache__/
 gui/__pycache__/*.pyc
+searches.txt
