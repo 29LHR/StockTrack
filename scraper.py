@@ -28,7 +28,7 @@ def getVal(ticker : str, val : str) -> str:
             print(f"Found {val} Data")
             return str(tdVals[i+1])
         
-def procEstEarn(ticker : str) -> date:
+def getEstEarn(ticker : str) -> date:
     def moToNo(month : str) -> int:
         month = month.lower()
         if month == "jan" or month == "january":
@@ -57,5 +57,7 @@ def procEstEarn(ticker : str) -> date:
             return 12
 
     raw = getVal(ticker, "est. earnings")
-    
+    raw = raw.replace(",","")
+    raw = raw.replace(",","").split(" ")
+    return date(int(raw[2]),moToNo(raw[0]),int(raw[1]))
     
