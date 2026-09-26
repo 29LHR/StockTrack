@@ -13,7 +13,7 @@ def tickerToName(ticker : str, **kwargs):
     
     #Find the title element and return the text within
     soup = BeautifulSoup(html, 'html.parser')
-    h1 = str(soup.find("h1").text) #Ignore error - on every page on stockanalysis there is a <h1>
+    h1 = str(soup.find("h1").text) # type: ignore #Surpressed error - on every page on stockanalysis there is a <h1>
     return ' '.join(h1.split(' ')[:-1])
     
     
