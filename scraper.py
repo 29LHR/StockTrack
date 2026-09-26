@@ -13,7 +13,7 @@ def tickerToName(ticker : str, **kwargs):
     
     #Find the title element and return the text within
     soup = BeautifulSoup(html, 'html.parser')
-    h1 = str(soup.find("h1").text)
+    h1 = str(soup.find("h1").text) #Ignore error - on every page on stockanalysis there is a <h1>
     return ' '.join(h1.split(' ')[:-1])
     
     
@@ -27,6 +27,7 @@ def getHTML(ticker : str):
             return html
         except Exception as e:
             print(str(e))
+            raise Exception
 
 def getVal(ticker : str, val : str, **kwargs) -> str:
     val = val.lower()
@@ -54,6 +55,10 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
         if tdVals[i].lower() == val.lower():
             print(f"Found {val} Data")
             return str(tdVals[i+1])
+        else:
+            return "An Error Occurred"
+
+    return "An Error Occurred"
         
 def getEstEarn(ticker : str, **kwargs) -> date:
     def moToNo(month : str) -> int:
@@ -122,6 +127,8 @@ def buyComp(ticker1 : str, ticker2 : str) -> str:
         case "time":
             t1time = getEstEarn(ticker1, html=t1html)
             t2time = getEstEarn(ticker2, html=t2html)
+            if t1time.month == 0 or t2time.month == 0:
+                return "An Error Occurred"
             if t1time > t2time:
                 return getVal(ticker1, "name", html=t1html)
             elif t1time == t2time:
