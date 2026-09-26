@@ -26,7 +26,18 @@ def getPrice(ticker : str, **kwargs):
     soup = BeautifulSoup(html, "html.parser")
     
     return float(soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
+
+def getPriceIncrease(ticker : str, **kwargs):
+    ticker = ticker.lower()
+    if "html" in kwargs.keys():
+        html = kwargs["html"]
+    else:
+        html = getHTML(ticker)
     
+    soup = BeautifulSoup(html, "html.parser")
+    
+    return soup.find_all("div", class_="font-semibold block text-lg xs:text-xl sm:inline sm:text-2xl text-green-vivid")[0].text.split(" ")[0]
+
 def getHTML(ticker : str):
     #Use requests to get html content of Ticker's website
         url = f"https://stockanalysis.com/stocks/{ticker.lower()}/"
