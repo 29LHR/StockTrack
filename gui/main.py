@@ -27,7 +27,7 @@ class main():
             if priceChg[0] == "+":
                 priceChgLbl.configure(text_color="green")
             else:
-                priceChgLbl.configure(text_color="red")
+                priceChgLbl.configure(text_color="#dc2626")
             priceChgLbl.pack()
         
     def __init__(self, root, setupFile):
@@ -146,7 +146,7 @@ class stockDisplay():
         if self.priceInc[0] == "+":
             self.color = "green"
         else:
-            self.color = "red"
+            self.color = "#dc2626"
             
         self.trendFrame = CTkFrame(self.quickFrame, border_width=1)
         self.trend = self.calcSearches()

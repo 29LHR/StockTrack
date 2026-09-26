@@ -36,7 +36,10 @@ def getPriceIncrease(ticker : str, **kwargs):
     
     soup = BeautifulSoup(html, "html.parser")
     
-    return soup.find_all("div", class_="font-semibold block text-lg xs:text-xl sm:inline sm:text-2xl text-green-vivid")[0].text.split(" ")[0]
+    try:
+        return soup.find_all("div", class_="font-semibold block text-lg xs:text-xl sm:inline sm:text-2xl text-green-vivid")[0].text.split(" ")[0]
+    except:
+        return soup.find_all("div", class_="font-semibold block text-lg xs:text-xl sm:inline sm:text-2xl text-red-vivid")[0].text.split(" ")[0]
 
 def getHTML(ticker : str):
     #Use requests to get html content of Ticker's website
