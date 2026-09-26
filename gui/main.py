@@ -1,5 +1,5 @@
 import tkinter as tk
-from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CTkToplevel
+from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CTkToplevel, CTkRadioButton
 from scraper import getVal, getPrice, getPriceIncrease, tickerToName
 
 class main():
@@ -51,9 +51,24 @@ class main():
         self.custom = CTkEntry(self.root, placeholder_text="Enter ticker", placeholder_text_color="grey")
         self.custom.grid(column=0, columnspan=2, row=2, padx=10, pady=2)
         
-        self.searchButton = CTkButton(self.root, text="Evaluate Stock", command=self.createStockDisplay)
+        self.searchButton = CTkButton(self.root, text="Evaluate Stock", command=self.__createStockDisplay)
         self.searchButton.grid(column=2, row=2, padx=10, pady=2)
-    
+        
+        #Add Comparison Form
+        self.compFrame = CTkFrame(self.root)
+        self.compLabel = CTkLabel(self.compFrame, text="Comparision:").grid(row=0, column=0)
+        self.compEntryT1 = CTkEntry(self.compFrame, placeholder_text="Ticker 1").grid(row=0, column=1)
+        self.compEntryT2 = CTkEntry(self.compFrame, placeholder_text="Ticker 2").grid(row=0, column=2)
+        self.compButton = CTkButton(self.compFrame, text="Compare", command=self.__compare).grid(row=2, column=0, columnspan=3, sticky="nsew", padx=5, pady=5)
+        
+        #Add Comparison radio
+        self.compMethod = StringVar(value="Time")
+        rbTime = CTkRadioButton(self.compFrame, text="Time", variable= self.compMethod, value="time").grid(row=1, column=0, pady=2, padx=2)
+        rbPrice = CTkRadioButton(self.compFrame, text="Price", variable= self.compMethod, value="price").grid(row=1, column=1, pady=2, padx=2)
+        rbAnalyst = CTkRadioButton(self.compFrame, text="Analyst", variable= self.compMethod, value="analyst").grid(row=1, column=2, pady=2, padx=2)
+        
+        self.compFrame.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
+        
     def __setup1Page(self):
         h1 = CTkLabel(self.root, text=f"Hi {self.name}, here are today's stocks:")
         h1.configure(font=("Inter", 20))
@@ -67,8 +82,12 @@ class main():
         
         self.favTickFrame.grid(column=0, columnspan=3, row=1, padx=10, pady=5)
     
-    def createStockDisplay(self):
+    def __createStockDisplay(self):
         stockDisplay(self.root, self.custom.get())
+    
+    def __compare(self):
+        #Functionality coming soon
+        pass
     
 class stockDisplay():
     class __tableElement():
