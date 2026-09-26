@@ -15,7 +15,17 @@ def tickerToName(ticker : str, **kwargs):
     soup = BeautifulSoup(html, 'html.parser')
     h1 = str(soup.find("h1").text) # type: ignore #Surpressed error - on every page on stockanalysis there is a <h1>
     return ' '.join(h1.split(' ')[:-1])
+
+def getPrice(ticker : str, **kwargs):
+    ticker = ticker.lower()
+    if "html" in kwargs.keys():
+        html = kwargs["html"]
+    else:
+        html = getHTML(ticker)
     
+    soup = BeautifulSoup(html, "html.parser")
+    
+    return float(soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
     
 def getHTML(ticker : str):
     #Use requests to get html content of Ticker's website
