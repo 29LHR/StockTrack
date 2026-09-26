@@ -98,17 +98,14 @@ def buyComp(ticker1 : str, ticker2 : str) -> str:
     #1 Get analyst vals
     t1anal, t2anal = getVal(ticker1, "analysts", html=t1html).lower(), getVal(ticker2, "analysts", html=t2html).lower()
     if t1anal == "strong buy" and t2anal != "strong buy":
-        return getVal(ticker1, "name", html=t1html)
+        return f"{getVal(ticker1, "name", html=t1html)} ({ticker1})"
     elif t1anal != "strong buy" and t2anal == "strong buy":
-        return getVal(ticker2, "name", html=t2html)
+        return f"{getVal(ticker2, "name", html=t1html)} ({ticker2})"
     else:
         if t1anal == "buy" and t2anal != "buy":
-            return getVal(ticker1, "name", html=t1html)
+            return f"{getVal(ticker1, "name", html=t1html)} ({ticker1})"
         elif t1anal != "buy" and t2anal == "buy":
-            return getVal(ticker2, "name", html=t2html)
-        elif t1anal != "buy" and t2anal != "buy":
-            print("Don't buy either")
-            return "Choose a different stock"
+            return f"{getVal(ticker2, "name", html=t1html)} ({ticker2})"
         else:
             print("Analysts were inconclusive")
             
