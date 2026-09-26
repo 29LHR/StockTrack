@@ -82,6 +82,8 @@ def getEstEarn(ticker : str, **kwargs) -> date:
             return 11
         elif month == "dec" or month == "december":
             return 12
+        else:
+            return 0
     
     if "html" in kwargs.keys():
             html = kwargs["html"]
