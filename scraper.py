@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 
 #Known Variables
-stockVals = ["name", "open", "previous close", "analysts", "est. earnings"]
+stockVals = ["name", "open", "previous close", "analysts", "est. earnings", "full"]
 
 def tickerToName(ticker : str, **kwargs):
     if "html" in kwargs.keys():
@@ -71,6 +71,9 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
         
     tds = soup.find_all('td')
     tdVals = [td.text for td in tds]
+    
+    if val == "full":
+        return ' | '.join(tdVals)
     
     for i in range(len(tdVals)):
         if tdVals[i].lower() == val.lower():

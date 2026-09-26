@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import Label, Frame, Entry, StringVar, Button, Toplevel
-from scraper import getPrice, getPriceIncrease, tickerToName
+from scraper import getVal, getPrice, getPriceIncrease, tickerToName
 
 class main():
     class __favQuickFrame():
@@ -80,5 +80,20 @@ class stockDisplay():
         #Setup Window
         self.tl.title(f"{self.name} Stock")
         
+        #Get Vals
+        self.vals = getVal(self.ticker, "full").split(" | ")
+        self.createValsTable()
         
+        #Add to searches.txt
+        with open("searches.txt", "a") as f:
+            f.write(self.ticker)
+            
+    def createValsTable(self):
+        self.valsTable = Frame(self.tl)
         
+        table = []
+        for i in range(8):
+            table.append([Label(self.valsTable, text=self.vals[0+(i*2)]).grid(column=0,row=i), Label(self.valsTable, text=self.vals[1+(i*2)]).grid(column=1,row=i), Label(self.valsTable, text=self.vals[16+(i*2)]).grid(column=2,row=i),Label(self.valsTable, text=self.vals[17+(i*2)]).grid(column=3,row=i)]) #adds a row to the table
+            print(f"Added Row {i}")
+        
+        self.valsTable.pack()
