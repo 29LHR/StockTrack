@@ -3,6 +3,29 @@ from tkinter import Button, Label, Frame
 from scraper import getPrice, getPriceIncrease
 
 class main():
+    class __favQuickFrame():
+        def __init__(self, root, col : int, ticker : str):
+            #Setup Frame
+            self.__frame = Frame(root)
+            self.__frame.grid(column=col, row=1)
+            
+            #Initalise Variables
+            self.ticker = ticker
+            title = Label(self.__frame, text=ticker.upper())
+            title.pack()
+            
+            self.__displayVals()
+            
+        def __displayVals(self):
+            #Display the current price of the stock
+            price = getPrice(self.ticker)
+            priceLbl = Label(self.__frame, text=str(price))
+            priceLbl.pack()
+            
+            priceChg = getPriceIncrease(self.ticker)
+            priceChgLbl = Label(self.__frame, text=str(priceChg))
+            priceChgLbl.pack()
+        
     def __init__(self, root, setupFile):
         #Setup App Base
         self.root = root
@@ -27,28 +50,6 @@ class main():
         
         currentCol = 0
         for ticker in self.favTickers:
-            __favQuickFrame(self.root, currentCol, ticker)
+            self.__favQuickFrame(self.root, currentCol, ticker)
+            currentCol += 1
 
-class __favQuickFrame():
-    def __init__(self, root, col : int, ticker : str):
-        #Setup Frame
-        self.__frame = Frame(root)
-        self.__frame.grid(column=col, row=1)
-        
-        #Initalise Variables
-        self.ticker = ticker
-        title = Label(self.__frame, text=ticker.upper())
-        title.pack()
-        
-        self.__displayVals()
-        
-    def __displayVals(self):
-        #Display the current price of the stock
-        price = getPrice(self.ticker)
-        priceLbl = Label(self.__frame, text=str(price))
-        priceLbl.pack()
-        
-        priceChg = getPriceIncrease(self.ticker)
-        priceChgLbl = Label(self.__frame, text=str(priceChg))
-        priceChgLbl.pack()
-        
