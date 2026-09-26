@@ -9,7 +9,9 @@ def getClose(ticker : str) -> float:
         response = requests.get(url)
         html = response.content
         print("HTML Content Aquired")
-    except:
-        print(Exception)
+    except Exception as e:
+        print(str(e))
+        return 0.00
+    
     
     
