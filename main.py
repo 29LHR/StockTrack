@@ -1,4 +1,4 @@
-import tkinter as tk
+import customtkinter as tk
 import gui.main as mainGUI
 from scraper import *
 import json
@@ -8,7 +8,7 @@ with open("__setup__.json", "r") as f:
     setup = json.load(f)
 
 #Initialise Main Class
-root = tk.Tk()
+root = tk.CTk()
 mainGUI.main(root, setup)
 
 #Start App
