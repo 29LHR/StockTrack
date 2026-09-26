@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-from typing import Literal
+from datetime import date
 
-stockVals = ["open", "previous close", "analysts"]
+stockVals = ["open", "previous close", "analysts", "est. earnings"]
 
 def getVal(ticker : str, val : str) -> str:
     if val.lower() not in stockVals:
@@ -27,3 +27,35 @@ def getVal(ticker : str, val : str) -> str:
         if tdVals[i].lower() == val.lower():
             print(f"Found {val} Data")
             return str(tdVals[i+1])
+        
+def procEstEarn(ticker : str) -> date:
+    def moToNo(month : str) -> int:
+        month = month.lower()
+        if month == "jan" or month == "january":
+            return 1
+        elif month == "feb" or month == "february":
+            return 2
+        elif month == "mar" or month == "march":
+            return 3
+        elif month == "apr" or month == "april":
+            return 4
+        elif month == "may":
+            return 5
+        elif month == "jun" or month == "june":
+            return 6
+        elif month == "jul" or month == "july":
+            return 7
+        elif month == "aug" or month == "august":
+            return 8
+        elif month == "sep" or month == "sept" or month == "september":
+            return 9
+        elif month == "oct" or month == "october":
+            return 10
+        elif month == "nov" or month == "november":
+            return 11
+        elif month == "dec" or month == "december":
+            return 12
+
+    raw = getVal(ticker, "est. earnings")
+    
+    
