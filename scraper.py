@@ -106,7 +106,7 @@ def buyComp(ticker1 : str, ticker2 : str) -> str:
     t1soup, t2soup = BeautifulSoup(t1html, "html.parser"), BeautifulSoup(t2html, "html.parser")
             
     #1 Find User Priority
-    #USER SELECTION (GUI) - In prog. | options[time, price, earnings, analyst]
+    #USER SELECTION (GUI) - In prog. | options[time, price, analyst]
     priority = input("Priority: ")
     match priority:
         case "analyst":
