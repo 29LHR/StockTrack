@@ -7,7 +7,7 @@ class main():
         def __init__(self, root, col : int, ticker : str):
             #Setup Frame
             self.__frame = CTkFrame(root)
-            self.__frame.grid(column=col, row=0)
+            self.__frame.grid(column=col, row=0, padx=10, pady=5)
             
             #Initalise Variables
             self.ticker = ticker
@@ -34,7 +34,6 @@ class main():
         #Setup App Base
         self.root = root
         self.root.title("Stocks App")
-        self.root.geometry("400x300")
         
         #Gather Setup.json values
         self.name = setupFile["name"]
@@ -48,17 +47,17 @@ class main():
         self.__setup1Page()
         
         #Added Custom Entry
-        self.customText = StringVar(value="Enter ticker: e.g. AAPL")
-        self.custom = CTkEntry(self.root, textvariable=self.customText)
-        self.custom.grid(column=0, columnspan=2, row=2)
+        self.customText = StringVar()
+        self.custom = CTkEntry(self.root, placeholder_text="Enter ticker", placeholder_text_color="grey")
+        self.custom.grid(column=0, columnspan=2, row=2, padx=10, pady=2)
         
         self.searchButton = CTkButton(self.root, text="Evaluate Stock", command=self.createStockDisplay)
-        self.searchButton.grid(column=2, row=2)
+        self.searchButton.grid(column=2, row=2, padx=10, pady=2)
     
     def __setup1Page(self):
         h1 = CTkLabel(self.root, text=f"Hi {self.name}, here are today's stocks:")
-        h1.configure(font=("Inter", 24))
-        h1.grid(row=0, column=0, columnspan=3)
+        h1.configure(font=("Inter", 20))
+        h1.grid(row=0, column=0, columnspan=3, padx=10, pady=5)
         
         self.favTickFrame = CTkFrame(self.root)
         currentCol = 0
@@ -66,10 +65,10 @@ class main():
             self.__favQuickFrame(self.favTickFrame, currentCol, ticker)
             currentCol += 1
         
-        self.favTickFrame.grid(column=0, columnspan=3, row=1)
+        self.favTickFrame.grid(column=0, columnspan=3, row=1, padx=10, pady=5)
     
     def createStockDisplay(self):
-        stockDisplay(self.root, self.customText.get())
+        stockDisplay(self.root, self.custom.get())
     
 class stockDisplay():
     class __tableElement():
@@ -93,9 +92,13 @@ class stockDisplay():
         self.tl.title(f"{self.name} Stock")
         
         #Add Headings
-        self.title = CTkLabel(self.tl, text=self.ticker)
-        self.subtitle = CTkLabel(self.tl, text=self.name)
+        self.title = CTkLabel(self.tl, text=f"{self.name} ({self.ticker.upper()})")
+        self.title.configure(font=("Inter", 24))
+        self.title.grid(row=0, column=0, padx=10, pady=10)
+        
         self.price = CTkLabel(self.tl, text=str(self.price))
+        self.price.configure(font=("Inter", 24))
+        self.price.grid(row=0, column=1, padx=10, pady=10)
         
         #Get Vals
         self.vals = getVal(self.ticker, "full").split(" | ")
@@ -106,11 +109,17 @@ class stockDisplay():
             f.write(self.ticker + ",")
             
     def createValsTable(self):
-        self.valsTable = CTkFrame(self.tl, relief="solid", borderwidth=1)
+        self.valsTable = CTkFrame(self.tl)
         
         table = []
         for i in range(8):
             table.append([self.__tableElement(self.valsTable, text=self.vals[0+(i*2)], row=i, col=0), self.__tableElement(self.valsTable, text=self.vals[1+(i*2)], row=i, col=1), self.__tableElement(self.valsTable, text=self.vals[16+(i*2)], row=i, col=2), self.__tableElement(self.valsTable, text=self.vals[17+(i*2)], row=i, col=3)]) #adds a row of tableElements to the table
             print(f"Added Row {i}")
         
-        self.valsTable.grid(row=1, column=0, columnspan=2)
+        self.valsTable.grid(row=1, column=0, columnspan=2, padx=10, pady= 10)
+    
+    def calcSearches(self):
+        with open("searches.txt", "r") as f:
+            all = f.read().split(",")
+        
+        number = all.count(self.ticker)
