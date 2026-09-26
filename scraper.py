@@ -130,11 +130,12 @@ def buyComp(ticker1 : str, ticker2 : str) -> str:
         case "price":
             t1price = float(t1soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
             t2price = float(t2soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
-            if t1price > t2price:
-                return getVal(ticker1, "name", html=t1html)
+            if t1price < t2price:
+                return getVal(ticker1, "name", html=t1html) + str(t1price)
             elif t1price == t2price:
                 return "inconclusive"
             else:
-                return getVal(ticker2, "name", html=t2html)
+                return getVal(ticker2, "name", html=t2html) + str(t2price)
             
-        
+        case _:
+            return "inconclusive"
