@@ -1,6 +1,5 @@
-tk
+customtkinter
 matplotlib
 requests
 beautifulsoup4
 datetime
-json
