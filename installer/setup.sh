@@ -24,4 +24,5 @@ cd ..
 rm setup.sh
 
 echo "starting app"
+cd StockTrack
 python3 main.py
