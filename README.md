@@ -19,7 +19,7 @@
 3. Follow Setup Wizard
 
 ### Method 2:
-
-2. Install requirements using `pip3 install -r requirements.txt`
-3. Run setup.py
-4. Delete setup.py
+2. Create a virtual environment (venv) and make it the source
+3. Install requirements using `pip3 install -r requirements.txt`
+4. Run setup.py
+5. Delete setup.py
