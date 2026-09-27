@@ -78,14 +78,15 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
     if val == "full":
         return ' | '.join(tdVals)
     
+    print(tdVals)
     for i in range(len(tdVals)):
+        print(i)
         print(val)
         if tdVals[i].lower() == val.lower():
             print(f"Found {val} Data")
             return str(tdVals[i+1])
         else:
-            print("No val found") #Error finding est. earnings val
-            return "An Error Occurred"
+            print("No val found")
 
     return "An Error Occurred"
         
