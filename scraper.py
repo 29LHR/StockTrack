@@ -128,13 +128,10 @@ def getEstEarn(ticker : str, **kwargs) -> date:
     raw = raw.replace(",","").split(" ")
     return date(int(raw[2]),moToNo(raw[0]),int(raw[1]))
 
-def buyComp(ticker1 : str, ticker2 : str) -> str:
+def buyComp(ticker1 : str, ticker2 : str, priority : str) -> str:
     t1html, t2html = getHTML(ticker1), getHTML(ticker2)
     t1soup, t2soup = BeautifulSoup(t1html, "html.parser"), BeautifulSoup(t2html, "html.parser")
-            
-    #1 Find User Priority
-    #USER SELECTION (GUI) - In prog. | options[time, price, analyst]
-    priority = input("Priority: ")
+    
     match priority:
         case "analyst":
             t1anal = getVal(ticker1, "analysts", html=t1html).lower()

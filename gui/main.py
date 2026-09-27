@@ -1,5 +1,6 @@
 from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CTkToplevel, CTkRadioButton
-from scraper import getVal, getPrice, getPriceIncrease, tickerToName, buyComp
+from scraper import getPrice, getPriceIncrease
+from stockDisplay import stockDisplay
 
 class main():
     class __favQuickFrame():
