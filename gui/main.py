@@ -34,7 +34,7 @@ class main():
     def __init__(self, root, setupFile):
         #Setup App Base
         self.root = root
-        self.root.title("Stocks App")
+        self.root.title("StockTrack")
         
         #Gather Setup.json values
         self.name = setupFile["name"]
