@@ -1,6 +1,7 @@
 from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CTkToplevel, CTkRadioButton
 from scraper import getPrice, getPriceIncrease
-from stockDisplay import stockDisplay
+from gui.stockDisplay import stockDisplay
+from gui.comparison import compGUI
 
 class main():
     class __favQuickFrame():
@@ -56,9 +57,15 @@ class main():
         
         #Add Comparison Form
         self.compFrame = CTkFrame(self.root)
+        
         self.compLabel = CTkLabel(self.compFrame, text="Comparision:").grid(row=0, column=0)
-        self.compEntryT1 = CTkEntry(self.compFrame, placeholder_text="Ticker 1").grid(row=0, column=1)
-        self.compEntryT2 = CTkEntry(self.compFrame, placeholder_text="Ticker 2").grid(row=0, column=2)
+        
+        self.compEntryT1 = CTkEntry(self.compFrame, placeholder_text="Ticker 1", placeholder_text_color="grey")
+        self.compEntryT1.grid(row=0, column=1)
+        
+        self.compEntryT2 = CTkEntry(self.compFrame, placeholder_text="Ticker 2", placeholder_text_color="grey")
+        self.compEntryT2.grid(row=0, column=2)
+        
         self.compButton = CTkButton(self.compFrame, text="Compare", command=self.__compare).grid(row=2, column=0, columnspan=3, sticky="nsew", padx=5, pady=5)
         
         #Add Comparison radio
@@ -86,6 +93,4 @@ class main():
         stockDisplay(self.root, self.custom.get())
     
     def __compare(self):
-        #Functionality coming soon
-        pass
-    
+        compGUI(self.root, self.compEntryT1.get(), self.compEntryT2.get(), self.compMethod)
