@@ -93,4 +93,4 @@ class main():
         stockDisplay(self.root, self.custom.get())
     
     def __compare(self):
-        compGUI(self.root, self.compEntryT1.get(), self.compEntryT2.get(), self.compMethod)
+        compGUI(self.root, self.compEntryT1.get(), self.compEntryT2.get(), self.compMethod.get())

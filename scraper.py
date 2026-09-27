@@ -74,15 +74,17 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
         
     tds = soup.find_all('td')
     tdVals = [td.text for td in tds]
-    
+    print(tdVals)
     if val == "full":
         return ' | '.join(tdVals)
     
     for i in range(len(tdVals)):
+        print(val)
         if tdVals[i].lower() == val.lower():
             print(f"Found {val} Data")
             return str(tdVals[i+1])
         else:
+            print("No val found") #Error finding est. earnings val
             return "An Error Occurred"
 
     return "An Error Occurred"
@@ -121,11 +123,13 @@ def getEstEarn(ticker : str, **kwargs) -> date:
             html = kwargs["html"]
     else:
         html = getHTML(ticker)
-    raw = getVal(ticker, "est. earnings", html=html) #get raw data
+    raw = getVal(ticker, "Est. Earnings", html=html) #get raw data
     
     #turn raw string into a useable date
     raw = raw.replace(",","")
     raw = raw.replace(",","").split(" ")
+    print(raw)
+    print(date(int(raw[2]),moToNo(raw[0]),int(raw[1])))
     return date(int(raw[2]),moToNo(raw[0]),int(raw[1]))
 
 def buyComp(ticker1 : str, ticker2 : str, priority : str) -> str:
@@ -136,39 +140,43 @@ def buyComp(ticker1 : str, ticker2 : str, priority : str) -> str:
         case "analyst":
             t1anal = getVal(ticker1, "analysts", html=t1html).lower()
             t2anal = getVal(ticker2, "analysts", html=t2html).lower()
+            print(f"{ticker1}: {t1anal}; {ticker2}: {t2anal}")
             if t1anal == "strong buy" and t2anal != "strong buy":
-                return getVal(ticker1, "name", html=t1html)
+                return ticker2
             elif t1anal != "strong buy" and t2anal == "strong buy":
-                return getVal(ticker2, "name", html=t2html)
+                return ticker2
             else:
                 if t1anal == "buy" and t2anal != "buy":
-                    return getVal(ticker1, "name", html=t1html)
+                    return ticker1
                 elif t1anal != "buy" and t2anal == "buy":
-                    return getVal(ticker2, "name", html=t2html)
+                    return ticker2
                 else:
                     return 'inconclusive'
          
         case "time":
-            t1time = getEstEarn(ticker1, html=t1html)
-            t2time = getEstEarn(ticker2, html=t2html)
+            t1time = getEstEarn(ticker1)
+            t2time = getEstEarn(ticker2)
+            print(f"{ticker1}: {t1time}; {ticker2}: {t2time}")
             if t1time.month == 0 or t2time.month == 0:
                 return "An Error Occurred"
             if t1time > t2time:
-                return getVal(ticker1, "name", html=t1html)
+                return ticker1
             elif t1time == t2time:
                 return "inconclusive"
             else:
-                return getVal(ticker2, "name", html=t2html)
+                return ticker2
         
         case "price":
             t1price = float(t1soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
             t2price = float(t2soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
+            print(f"{ticker1}: {t1price}; {ticker2}: {t2price}")
             if t1price < t2price:
-                return getVal(ticker1, "name", html=t1html) + str(t1price)
+                return ticker1 + " | " + str(t1price)
             elif t1price == t2price:
                 return "inconclusive"
             else:
-                return getVal(ticker2, "name", html=t2html) + str(t2price)
+                return ticker2 + " | " + str(t2price)
             
         case _:
+            print("No method caught")
             return "inconclusive"
