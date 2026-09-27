@@ -26,7 +26,7 @@ def internetRetry():
         
 
 #Process __setup__.json
-with open("__setup__.json", "r") as f:
+with open("__setup.json", "r") as f:
     setup = json.load(f)
 
 #Initialise Main Class

@@ -2,7 +2,7 @@ venv/
 **./*.pyc
 *.pyc
 __pycache__/
-__setup__.json
+__setup.json
 gui/__pycache__/
 gui/__pycache__/*.pyc
 searches.txt
