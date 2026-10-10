@@ -2,7 +2,7 @@ from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CT
 from scraper import getPrice, getPriceIncrease
 from gui.stockDisplay import stockDisplay
 from gui.comparison import compGUI
-lazy import shutil
+lazy import shutil, os
 
 class main():
     class __favQuickFrame():
@@ -37,6 +37,9 @@ class main():
         self.root = root
         self.root.title("StockTrack")
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        
+        #Create temp dir
+        os.mkdir("temp")
         
         #Gather Setup.json values
         self.name = setupFile["name"]
