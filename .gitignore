@@ -6,3 +6,4 @@ __setup.json
 gui/__pycache__/
 gui/__pycache__/*.pyc
 searches.txt
+temp/
