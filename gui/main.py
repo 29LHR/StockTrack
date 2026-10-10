@@ -1,4 +1,4 @@
-from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CTkToplevel, CTkRadioButton
+from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CTkRadioButton
 from scraper import getPrice, getPriceIncrease
 from gui.stockDisplay import stockDisplay
 from gui.comparison import compGUI

@@ -54,6 +54,8 @@ def getHTML(ticker : str):
             raise Exception
 
 def getVal(ticker : str, val : str, **kwargs) -> str:
+    if val == "est. earnings":
+            val = "earnings date"
     val = val.lower()
     if val.lower() not in stockVals:
         return "Invalid Stock Value"
@@ -79,6 +81,7 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
         return ' | '.join(tdVals)
     
     print(tdVals)
+    
     for i in range(len(tdVals)):
         print(i)
         print(val)
@@ -86,11 +89,12 @@ def getVal(ticker : str, val : str, **kwargs) -> str:
             print(f"Found {val} Data")
             return str(tdVals[i+1])
         else:
+            print(tdVals[i])
             print("No val found")
 
-    return "An Error Occurred"
+    raise ValueError
         
-def getEstEarn(ticker : str, **kwargs) -> date:
+def getEstEarn(ticker : str, **kwargs) -> date: #CAUSING ERROR
     def moToNo(month : str) -> int:
         month = month.lower()
         if month == "jan" or month == "january":
@@ -124,8 +128,14 @@ def getEstEarn(ticker : str, **kwargs) -> date:
             html = kwargs["html"]
     else:
         html = getHTML(ticker)
-    raw = getVal(ticker, "Est. Earnings", html=html) #get raw data
     
+    try:
+        raw = getVal(ticker, "Est. Earnings") #get raw data
+        print("Raw data found")
+    except:
+        print("Raw data collection failure")
+        return date(1,1,1)
+        
     #turn raw string into a useable date
     raw = raw.replace(",","")
     raw = raw.replace(",","").split(" ")
