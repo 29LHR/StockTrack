@@ -2,6 +2,7 @@ from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CT
 from scraper import getPrice, getPriceIncrease
 from gui.stockDisplay import stockDisplay
 from gui.comparison import compGUI
+lazy import shutil
 
 class main():
     class __favQuickFrame():
@@ -35,6 +36,7 @@ class main():
         #Setup App Base
         self.root = root
         self.root.title("StockTrack")
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         
         #Gather Setup.json values
         self.name = setupFile["name"]
@@ -94,3 +96,8 @@ class main():
     
     def __compare(self):
         compGUI(self.root, self.compEntryT1.get(), self.compEntryT2.get(), self.compMethod.get())
+
+    def on_close(self):
+        print("Removing temp files")
+        shutil.rmtree("temp")
+        self.root.destroy()
