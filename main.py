@@ -1,7 +1,7 @@
-import customtkinter as tk
-import gui.main as mainGUI
+lazy import customtkinter as tk
+lazy import gui.main as mainGUI
 from scraper import *
-import json,requests
+lazy import json,requests
 
 #Internet Checker
 def internetCheck() -> bool:

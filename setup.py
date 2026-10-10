@@ -1,6 +1,6 @@
 from customtkinter import CTkEntry, CTkButton, CTkLabel, CTkFrame, StringVar, CTkRadioButton
-import customtkinter as tk
-import json
+lazy import customtkinter as tk
+lazy import json
 
 class setup():
     def __init__(self):
