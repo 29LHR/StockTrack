@@ -2,7 +2,7 @@ from customtkinter import CTkLabel, CTkFrame, CTkEntry, StringVar, CTkButton, CT
 from scraper import getPrice, getPriceIncrease
 from gui.stockDisplay import stockDisplay
 from gui.comparison import compGUI
-lazy import shutil, os
+lazy import shutil, os, sys
 
 class main():
     class __favQuickFrame():
@@ -39,7 +39,11 @@ class main():
         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         
         #Create temp dir
-        os.mkdir("temp")
+        try:
+            os.mkdir("temp")
+        except:
+            shutil.rmtree("temp")
+            os.mkdir("temp")
         
         #Gather Setup.json values
         self.name = setupFile["name"]
@@ -104,3 +108,4 @@ class main():
         print("Removing temp files")
         shutil.rmtree("temp")
         self.root.destroy()
+        sys.exit()

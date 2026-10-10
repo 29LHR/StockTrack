@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 
 #Known Variables
-stockVals = ["name", "open", "previous close", "analysts", "est. earnings", "full"]
+stockVals = ["name", "open", "previous close", "analysts", "earnings date", "full"]
 
 def tickerToName(ticker : str, **kwargs):
     if "html" in kwargs.keys():
@@ -54,9 +54,10 @@ def getHTML(ticker : str):
             raise Exception
 
 def getVal(ticker : str, val : str, **kwargs) -> str:
-    if val == "est. earnings":
-            val = "earnings date"
+    if val.lower() == "est. earnings":
+            val = "Earnings Date"
     val = val.lower()
+    
     if val.lower() not in stockVals:
         return "Invalid Stock Value"
     
