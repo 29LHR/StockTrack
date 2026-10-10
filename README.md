@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Python 3.11 or higher
+- Python 3.15.0 or higher
 - MacOS
 
 ## Method 1: Terminal (Recommended)
@@ -13,13 +13,18 @@
 
 1. Download the Github Repo
 
-### Method 1:
+### Route 1:
 
 2. Run the `./installer/setup.sh` script using bash
 3. Follow Setup Wizard
 
-### Method 2:
+### Route 2:
 2. Create a virtual environment (venv) and make it the source
 3. Install requirements using `pip3 install -r requirements.txt`
 4. Run setup.py
 5. Delete setup.py
+
+# Using the App
+1. Run the command `bash run.sh`
+2. Use the individual stock tracker by typing a valid ticker into the entry field and press "Evaluate Stock"
+3. Use the stock comparison by entering two tickers, selecting a comparison method and clicking "Compare".
