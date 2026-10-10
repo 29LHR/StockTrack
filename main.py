@@ -5,6 +5,7 @@ lazy import json,requests
 
 #Internet Checker
 def internetCheck() -> bool:
+    print("Checking internet")
     try:
         requests.get("https://bbc.co.uk")
         return True
