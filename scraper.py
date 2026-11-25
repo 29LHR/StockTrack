@@ -24,8 +24,9 @@ def getPrice(ticker : str, **kwargs):
         html = getHTML(ticker)
     
     soup = BeautifulSoup(html, "html.parser")
-    
-    return float(soup.find_all("div", class_="text-4xl font-bold transition-colors duration-300 block sm:inline")[0].text)
+    divs = soup.find_all("div", class_="text-4xl")
+    print(divs)
+    return float(soup.find_all("div", class_="text-4xl")[0].text)
 
 def getPriceIncrease(ticker : str, **kwargs):
     ticker = ticker.lower()
@@ -37,9 +38,9 @@ def getPriceIncrease(ticker : str, **kwargs):
     soup = BeautifulSoup(html, "html.parser")
     
     try:
-        return soup.find_all("div", class_="font-semibold block text-lg xs:text-xl sm:inline sm:text-2xl text-green-vivid")[0].text.split(" ")[0]
+        return soup.find_all("div", class_="text-green-vivid")[0].text.split(" ")[0]
     except:
-        return soup.find_all("div", class_="font-semibold block text-lg xs:text-xl sm:inline sm:text-2xl text-red-vivid")[0].text.split(" ")[0]
+        return soup.find_all("div", class_="text-red-vivid")[0].text.split(" ")[0]
 
 def getHTML(ticker : str):
     #Use requests to get html content of Ticker's website
@@ -135,7 +136,7 @@ def getEstEarn(ticker : str, **kwargs) -> date: #CAUSING ERROR
         print("Raw data found")
     except:
         print("Raw data collection failure")
-        return date(1,1,1)
+        return date(0,0,0)
         
     #turn raw string into a useable date
     raw = raw.replace(",","")
@@ -154,7 +155,7 @@ def buyComp(ticker1 : str, ticker2 : str, priority : str) -> str:
             t2anal = getVal(ticker2, "analysts", html=t2html).lower()
             print(f"{ticker1}: {t1anal}; {ticker2}: {t2anal}")
             if t1anal == "strong buy" and t2anal != "strong buy":
-                return ticker2
+                return ticker1
             elif t1anal != "strong buy" and t2anal == "strong buy":
                 return ticker2
             else:
